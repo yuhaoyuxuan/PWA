@@ -4,10 +4,20 @@ class InstallPage {
     this.isInstalled = false;
     this.config = null;
     this.ringLength = 2 * Math.PI * 54; // r=54
+    this.installAccepted = false; // user accepted native prompt
+    this.animDone = false;        // progress animation finished
   }
 
   async init() {
     this.config = await configLoader.load();
+
+    // Already installed (standalone mode) → redirect to start_url
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    if (isStandalone) {
+      this.redirectToStart();
+      return;
+    }
+
     this.populateContent();
     this.initScreenshots();
     this.initStickyHeader();
@@ -243,13 +253,16 @@ class InstallPage {
 
     window.addEventListener('appinstalled', () => {
       this.isInstalled = true;
-      this.completeInstallUI();
+      this.installAccepted = true;
+      this.tryComplete();
     });
 
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      this.isInstalled = true;
-      this.redirectToStart();
-    }
+    // If no beforeinstallprompt fires within 2s, enable button as redirect
+    setTimeout(() => {
+      if (!this.deferredPrompt) {
+        this.enableInstallButtons();
+      }
+    }, 2000);
   }
 
   detectPlatform() {
@@ -284,7 +297,11 @@ class InstallPage {
   }
 
   async startInstall() {
-    if (!this.deferredPrompt) return;
+    // No native prompt available → redirect to start_url directly
+    if (!this.deferredPrompt) {
+      this.redirectToStart();
+      return;
+    }
 
     // Start progress animation
     this.animateProgress();
@@ -293,7 +310,10 @@ class InstallPage {
       await this.deferredPrompt.prompt();
       const result = await this.deferredPrompt.userChoice;
       this.deferredPrompt = null;
-      if (result.outcome !== 'accepted') {
+      if (result.outcome === 'accepted') {
+        this.installAccepted = true;
+        this.tryComplete();
+      } else {
         this.resetUI();
       }
     } catch {
@@ -370,10 +390,15 @@ class InstallPage {
     document.getElementById('installStepText').textContent = 'Instalação concluída';
     document.getElementById('installCheck').classList.add('show');
     this.setButtonState('success');
+    this.animDone = true;
+    this.tryComplete();
+  }
 
-    setTimeout(() => {
+  tryComplete() {
+    // Only redirect when both animation is done AND user accepted install
+    if (this.animDone && this.installAccepted) {
       this.completeInstallUI();
-    }, 600);
+    }
   }
 
   completeInstallUI() {
@@ -414,6 +439,8 @@ class InstallPage {
   }
 
   resetUI() {
+    this.installAccepted = false;
+    this.animDone = false;
     this.setButtonState('default');
     this.setProgress(0);
     document.getElementById('progressRing').classList.remove('active');
@@ -426,7 +453,7 @@ class InstallPage {
   redirectToStart() {
     localStorage.setItem('__pwa_launched', '1');
     sessionStorage.removeItem('__pwa_routed');
-    window.location.replace(this.config.app.start_url || '/app.html');
+    window.location.replace(this.config.app.start_url || './app.html');
   }
 
   // ── Helpers ──

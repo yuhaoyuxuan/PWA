@@ -12,8 +12,8 @@ class SWRegister {
     }
 
     try {
-      this.registration = await navigator.serviceWorker.register('/sw.js', {
-        scope: '/'
+      this.registration = await navigator.serviceWorker.register('./sw.js', {
+        scope: './'
       });
       console.log('SW registered:', this.registration.scope);
     } catch (err) {
@@ -84,19 +84,19 @@ class SWRegister {
       animation: 'slideUp 0.3s ease-out'
     });
     this.promptEl.innerHTML = `
-      <span>新版本可用</span>
+      <span>Nova versão disponível</span>
       <button class="update-apply-btn" style="
         background: var(--pwa-primary, #3b82f6);
         color: #fff; border: none;
         padding: 8px 16px; border-radius: 6px;
         cursor: pointer; font-weight: 600; font-size: 13px;
-      ">立即更新</button>
+      ">Atualizar agora</button>
       <button class="update-dismiss-btn" style="
         background: transparent; color: var(--pwa-text-secondary, #94a3b8);
         border: 1px solid var(--pwa-text-secondary, #94a3b8);
         padding: 8px 16px; border-radius: 6px;
         cursor: pointer; font-size: 13px;
-      ">稍后</button>
+      ">Mais tarde</button>
     `;
 
     this.promptEl.querySelector('.update-apply-btn').addEventListener('click', () => {

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#3b82f6">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./assets/icons/icon-192.png">
   <title>Loading...</title>
   <style>
     body {
@@ -31,7 +31,7 @@
 </head>
 <body>
   <div class="loader"></div>
-  <script src="/scripts/config-loader.js"></script>
+  <script src="./scripts/config-loader.js"></script>
   <script>
     (async function() {
       // Redirect guard: prevent loop if already redirected
@@ -41,25 +41,27 @@
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
       const wasLaunched = localStorage.getItem('__pwa_launched');
       const currentPath = window.location.pathname;
+      const baseDir = currentPath.replace(/\/[^/]*$/, '');
+      const installPath = baseDir + '/install.html';
 
       if (isStandalone || wasLaunched) {
         localStorage.setItem('__pwa_launched', '1');
         try {
           const config = await configLoader.load();
-          const startUrl = config.app.start_url || '/';
-          if (currentPath !== startUrl && currentPath !== '/install.html') {
+          const startUrl = config.app.start_url || './app.html';
+          if (currentPath !== startUrl && currentPath !== installPath) {
             window.location.replace(startUrl);
           }
         } catch {
           // Already on /, do nothing
         }
       } else {
-        if (currentPath !== '/install.html') {
+        if (currentPath !== installPath) {
           const params = new URLSearchParams(window.location.search);
           if (!params.has('returnUrl')) {
             params.set('returnUrl', currentPath + window.location.search);
           }
-          window.location.replace('/install.html?' + params.toString());
+          window.location.replace('./install.html?' + params.toString());
         }
       }
     })();

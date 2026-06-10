@@ -4,32 +4,51 @@
     "short_name": "HHA565",
     "developer": "🎁 Convide 1 pessoa e ganhe R$10",
     "description": "🎁 Convide 1 pessoa e ganhe R$10",
-    "start_url": "/app.html",
-    "scope": "/",
+    "start_url": "https://www.playgames777.vip/",
+    "scope": ".",
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone",
     "orientation": "portrait-primary",
     "icons": [
-      { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-      { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-      { "src": "/assets/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+      {
+        "src": "./assets/icons/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "./assets/icons/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "./assets/icons/icon-512-maskable.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
     ]
   },
   "installPage": {
     "title": "Instalar App",
     "subtitle": "Adicione à tela inicial para uma experiência completa",
-    "icon": "/assets/icons/icon-512.png",
+    "icon": "./assets/icons/icon-512.png",
     "screenshots": [
-      "/assets/images/1.gif",
-      "/assets/images/2.gif",
-      "/assets/images/3.gif",
-      "/assets/images/4.gif",
-      "/assets/images/5.gif"
+      "./assets/images/1.gif",
+      "./assets/images/2.gif",
+      "./assets/images/3.gif",
+      "./assets/images/4.gif",
+      "./assets/images/5.gif"
     ],
     "rating": 4.5,
     "reviewCount": 1200,
-    "ratingDistribution": [20, 30, 80, 220, 850],
+    "ratingDistribution": [
+      20,
+      30,
+      80,
+      220,
+      850
+    ],
     "reviews": [
       {
         "user": "andy",
@@ -65,7 +84,10 @@
       }
     ],
     "reviewAgeRating": "18+",
-    "badges": ["Seguro", "Sem anúncios"],
+    "badges": [
+      "Seguro",
+      "Sem anúncios"
+    ],
     "size": "2.5 MB",
     "category": "Ferramentas",
     "updatedDate": "2026-06-08",
@@ -73,8 +95,16 @@
     "whatsNew": "Versão inicial. Suporta cache offline e atualização automática de versão.",
     "dataSafety": "Este app não coleta nem compartilha nenhum dado do usuário. Todos os dados são armazenados no seu dispositivo.",
     "privacyUrl": "",
-    "features": ["Disponível offline", "Notificações push", "Inicialização rápida"],
-    "progressSteps": ["Baixando recursos...", "Armazenando em cache...", "Instalação concluída"],
+    "features": [
+      "Disponível offline",
+      "Notificações push",
+      "Inicialização rápida"
+    ],
+    "progressSteps": [
+      "Baixando recursos...",
+      "Armazenando em cache...",
+      "Instalação concluída"
+    ],
     "progressDuration": 3000,
     "theme": {
       "primary": "#01875f",
@@ -97,26 +127,43 @@
   "cache": {
     "version": "1.0.0",
     "precache": [
-      "/",
-      "/index.html",
-      "/install.html",
-      "/app.html",
-      "/offline.html",
-      "/manifest.json",
-      "/pwa.config.json",
-      "/styles/variables.css",
-      "/styles/install.css",
-      "/scripts/config-loader.js",
-      "/scripts/install-page.js",
-      "/scripts/sw-register.js"
+      "./",
+      "./index.html",
+      "./install.html",
+      "./app.html",
+      "./offline.html",
+      "./manifest.json",
+      "./pwa.config.json",
+      "./styles/variables.css",
+      "./styles/install.css",
+      "./scripts/config-loader.js",
+      "./scripts/install-page.js",
+      "./scripts/sw-register.js"
     ],
     "runtimeCache": [
-      { "urlPattern": "/api/", "strategy": "network-first", "maxAge": 0 },
-      { "urlPattern": "/images/", "strategy": "cache-first", "maxEntries": 50, "maxAge": 2592000 },
-      { "urlPattern": "/assets/", "strategy": "cache-first", "maxAge": 604800 },
-      { "urlPattern": "/fonts/", "strategy": "cache-first", "maxAge": 2592000 }
+      {
+        "urlPattern": "/api/",
+        "strategy": "network-first",
+        "maxAge": 0
+      },
+      {
+        "urlPattern": "/images/",
+        "strategy": "cache-first",
+        "maxEntries": 50,
+        "maxAge": 2592000
+      },
+      {
+        "urlPattern": "/assets/",
+        "strategy": "cache-first",
+        "maxAge": 604800
+      },
+      {
+        "urlPattern": "/fonts/",
+        "strategy": "cache-first",
+        "maxAge": 2592000
+      }
     ],
-    "offlineFallback": "/offline.html"
+    "offlineFallback": "./offline.html"
   },
   "update": {
     "autoUpdate": false,

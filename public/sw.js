@@ -1,4 +1,4 @@
-const CONFIG_URL = '/pwa.config.json';
+const CONFIG_URL = './pwa.config.json';
 const CACHE_PREFIX = 'pwa';
 
 let pwaConfig = null;
@@ -70,13 +70,14 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   // Config: always network-first
-  if (url.pathname === CONFIG_URL) {
+  const configPathname = new URL(CONFIG_URL, self.location.href).pathname;
+  if (url.pathname === configPathname) {
     event.respondWith(networkFirst(event.request));
     return;
   }
 
   // SW script: always network
-  if (url.pathname === '/sw.js') {
+  if (url.pathname === self.location.pathname) {
     event.respondWith(fetch(event.request));
     return;
   }

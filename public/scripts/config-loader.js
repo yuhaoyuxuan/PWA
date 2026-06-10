@@ -1,7 +1,7 @@
 class ConfigLoader {
   constructor() {
     this.config = null;
-    this.defaultConfigPath = '/pwa.config.json';
+    this.defaultConfigPath = './pwa.config.json';
   }
 
   async load(configPath) {
@@ -79,16 +79,16 @@ class ConfigLoader {
     return {
       app: {
         name: 'PWA App', short_name: 'App', developer: 'Developer',
-        description: '', start_url: '/app.html', scope: '/',
+        description: '', start_url: './app.html', scope: '.',
         theme_color: '#ffffff', background_color: '#ffffff',
         display: 'standalone', orientation: 'portrait-primary'
       },
       installPage: {
         title: 'Install App', subtitle: 'Add to home screen',
-        icon: '/assets/icons/icon-512.png', screenshots: [],
-        rating: 4.5, reviewCount: 0, badges: ['安全'],
-        size: '2.5 MB', category: '工具', updatedDate: '',
-        about: '', whatsNew: '', dataSafety: '此应用不会收集或分享任何用户数据。',
+        icon: './assets/icons/icon-512.png', screenshots: [],
+        rating: 4.5, reviewCount: 0, badges: ['Seguro'],
+        size: '2.5 MB', category: 'Ferramentas', updatedDate: '',
+        about: '', whatsNew: '', dataSafety: 'Este app não coleta nem compartilha nenhum dado do usuário.',
         privacyUrl: '',
         features: [], progressSteps: ['Downloading', 'Installing', 'Done'],
         progressDuration: 3000,
@@ -102,7 +102,7 @@ class ConfigLoader {
           skeleton: '#e0e0e0', skeletonShine: '#f0f0f0'
         }
       },
-      cache: { version: '1.0.0', precache: [], runtimeCache: [], offlineFallback: '/offline.html' },
+      cache: { version: '1.0.0', precache: [], runtimeCache: [], offlineFallback: './offline.html' },
       update: { autoUpdate: false, promptUser: true, checkInterval: 3600000 }
     };
   }
