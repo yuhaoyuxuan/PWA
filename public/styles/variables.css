@@ -1,0 +1,22 @@
+:root {
+  /* Play Store theme tokens */
+  --pwa-primary: #01875f;
+  --pwa-primary-hover: #016843;
+  --pwa-primary-dark: #016843;
+  --pwa-surface: #ffffff;
+  --pwa-surface-bg: #f5f5f5;
+  --pwa-on-surface: #1f1f1f;
+  --pwa-on-surface-variant: #5f6368;
+  --pwa-on-primary: #ffffff;
+  --pwa-primary-container: #e8f5e9;
+  --pwa-outline-variant: #e0e0e0;
+  --pwa-star-color: #faaf00;
+  --pwa-badge-bg: #e8f5e9;
+  --pwa-badge-text: #2e7d32;
+  --pwa-skeleton: #e0e0e0;
+  --pwa-skeleton-shine: #f0f0f0;
+
+  --pwa-radius: 16px;
+  --pwa-radius-sm: 8px;
+  --pwa-font: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}

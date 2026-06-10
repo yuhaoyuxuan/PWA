@@ -1,0 +1,557 @@
+@import './variables.css';
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  font-family: var(--pwa-font);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  background: var(--pwa-surface-bg);
+  color: var(--pwa-on-surface);
+}
+
+body {
+  background: var(--pwa-surface-bg);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ── Sticky Header ── */
+.sticky-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--pwa-surface);
+  border-bottom: 1px solid var(--pwa-outline-variant);
+  transform: translateY(-100%);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sticky-header.visible {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.sticky-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.sticky-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.sticky-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sticky-name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sticky-dev {
+  font-size: 12px;
+  color: var(--pwa-on-surface-variant);
+}
+
+.sticky-install-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  background: var(--pwa-primary);
+  color: var(--pwa-on-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.sticky-install-btn:active { transform: scale(0.95); }
+.sticky-install-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.sticky-progress {
+  height: 3px;
+  background: var(--pwa-primary-container);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.sticky-progress.active { opacity: 1; }
+
+.sticky-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--pwa-primary);
+  transition: width 0.3s ease;
+}
+
+/* ── Page Content ── */
+.page-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 16px 0 8px;
+}
+
+.icon-ring-container {
+  position: relative;
+  width: 96px; height: 96px;
+  margin: 0 auto 16px;
+}
+
+.app-icon-large {
+  width: 96px; height: 96px;
+  border-radius: 28.8px;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Circular Progress Ring */
+.progress-ring {
+  position: absolute;
+  top: -12px; left: -12px;
+  width: 120px; height: 120px;
+  z-index: 2;
+  transform: rotate(-90deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.progress-ring.active { opacity: 1; }
+
+.ring-track {
+  fill: none;
+  stroke: var(--pwa-primary-container, #e8f5e9);
+  stroke-width: 4;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: var(--pwa-primary);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 339.292;
+  transition: stroke-dashoffset 0.4s ease;
+}
+
+.install-check {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 3;
+  width: 36px; height: 36px;
+  background: var(--pwa-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.install-check.show { transform: translate(-50%, -50%) scale(1); }
+
+.app-title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  letter-spacing: -0.2px;
+}
+
+.app-dev {
+  font-size: 14px;
+  color: var(--pwa-on-surface-variant);
+  margin-bottom: 8px;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.rating-stars {
+  color: var(--pwa-star-color, #faaf00);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.rating-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rating-count {
+  font-size: 13px;
+  color: var(--pwa-on-surface-variant);
+}
+
+.badges-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.badge-safe {
+  background: var(--pwa-badge-bg, #e8f5e9);
+  color: var(--pwa-badge-text, #2e7d32);
+}
+
+/* ── Install Action ── */
+.install-action {
+  padding: 20px 0 16px;
+}
+
+.install-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 24px;
+  background: var(--pwa-primary);
+  color: var(--pwa-on-primary);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.install-btn:hover:not(:disabled) {
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--pwa-primary) 30%, transparent);
+}
+
+.install-btn:active:not(:disabled) { transform: scale(0.98); }
+.install-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.install-btn.installing { background: var(--pwa-primary-dark, #016843); }
+.install-btn.success {
+  background: var(--pwa-on-surface);
+  color: var(--pwa-surface);
+}
+
+.btn-size {
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.install-progress {
+  height: 4px;
+  background: var(--pwa-primary-container);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.install-progress.active { opacity: 1; }
+
+.install-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--pwa-primary);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.install-step-text {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--pwa-on-surface-variant);
+  min-height: 20px;
+}
+
+/* ── Screenshots ── */
+.screenshots-section {
+  margin-bottom: 24px;
+}
+
+.screenshots-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.screenshots-scroll::-webkit-scrollbar { display: none; }
+
+.screenshot-item {
+  flex-shrink: 0;
+  width: 220px;
+  height: 392px;
+  border-radius: 16px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: var(--pwa-skeleton);
+}
+
+.screenshot-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.screenshot-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.screenshot-dot {
+  width: 6px; height: 6px;
+  border-radius: 3px;
+  background: var(--pwa-outline-variant);
+  transition: all 0.2s;
+}
+
+.screenshot-dot.active {
+  width: 16px;
+  background: var(--pwa-primary);
+}
+
+/* ── Content Cards ── */
+.content-card {
+  background: var(--pwa-surface);
+  border: 1px solid var(--pwa-outline-variant);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.card-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--pwa-on-surface-variant);
+}
+
+.card-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--pwa-primary);
+  text-decoration: none;
+}
+
+/* Version row */
+.version-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.version-label {
+  font-size: 14px;
+  color: var(--pwa-on-surface-variant);
+}
+
+.version-value {
+  font-size: 13px;
+  color: var(--pwa-primary);
+  font-weight: 500;
+}
+
+/* Info List */
+.info-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.info-list li span:first-child {
+  color: var(--pwa-on-surface-variant);
+}
+
+.info-list li span:last-child {
+  font-weight: 500;
+}
+
+/* ── iOS Guide ── */
+.ios-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0,0,0,0.5);
+  animation: fadeIn 0.2s ease;
+}
+
+.ios-guide.hidden { display: none; }
+
+.ios-guide-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--pwa-surface);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+}
+
+.ios-guide-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ios-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ios-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ios-step-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--pwa-primary);
+  color: var(--pwa-on-primary);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ios-step span {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ios-guide-close {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--pwa-primary);
+  color: var(--pwa-on-primary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 300;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  animation: slideUp 0.25s ease;
+}
+
+.toast.success { background: #2e7d32; color: #fff; }
+.toast.error { background: #c62828; color: #fff; }
+.toast.hidden { display: none; }
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hidden { display: none !important; }
+
+/* ── Skeleton loading ── */
+.skeleton {
+  animation: shimmer 1.5s ease infinite;
+  background: linear-gradient(90deg, var(--pwa-skeleton) 25%, var(--pwa-skeleton-shine) 50%, var(--pwa-skeleton) 75%);
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Responsive ── */
+@media (min-width: 600px) {
+  .page-content { padding: 32px 24px 64px; }
+  .app-title { font-size: 28px; }
+}
+
+@media (min-width: 960px) {
+  .page-content { padding: 40px 32px 80px; }
+}

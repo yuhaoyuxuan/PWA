@@ -1,0 +1,88 @@
+{
+  "app": {
+    "name": "My PWA App",
+    "short_name": "App",
+    "developer": "Developer Name",
+    "description": "A PWA application with offline support",
+    "start_url": "/app.html",
+    "scope": "/",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "icons": [
+      { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+      { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+      { "src": "/assets/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    ]
+  },
+  "installPage": {
+    "title": "安装应用",
+    "subtitle": "添加到主屏幕以获得完整体验",
+    "icon": "/assets/icons/icon-512.png",
+    "screenshots": [
+      "/assets/images/608x1080-1.jpg",
+      "/assets/images/608x1080-2.jpg",
+      "/assets/images/608x1080-3.jpg"
+    ],
+    "rating": 4.5,
+    "reviewCount": 1200,
+    "badges": ["安全", "无广告"],
+    "size": "2.5 MB",
+    "category": "工具",
+    "updatedDate": "2026-06-08",
+    "about": "这是一个使用 PWA Manager 构建的渐进式 Web 应用。支持离线访问、推送通知和快速启动。安装后将获得类似原生应用的完整体验。",
+    "whatsNew": "初始版本。支持离线缓存和版本自动更新。",
+    "dataSafety": "此应用不会收集或分享任何用户数据。所有数据均存储在您的设备上。",
+    "privacyUrl": "",
+    "features": ["离线可用", "推送通知", "快速启动"],
+    "progressSteps": ["正在下载资源...", "正在缓存数据...", "完成安装"],
+    "progressDuration": 3000,
+    "theme": {
+      "primary": "#01875f",
+      "primaryHover": "#016843",
+      "primaryDark": "#016843",
+      "surface": "#ffffff",
+      "surfaceBg": "#f5f5f5",
+      "onSurface": "#1f1f1f",
+      "onSurfaceVariant": "#5f6368",
+      "onPrimary": "#ffffff",
+      "primaryContainer": "#e8f5e9",
+      "outlineVariant": "#e0e0e0",
+      "starColor": "#faaf00",
+      "badgeBg": "#e8f5e9",
+      "badgeText": "#2e7d32",
+      "skeleton": "#e0e0e0",
+      "skeletonShine": "#f0f0f0"
+    }
+  },
+  "cache": {
+    "version": "1.0.0",
+    "precache": [
+      "/",
+      "/index.html",
+      "/install.html",
+      "/app.html",
+      "/offline.html",
+      "/manifest.json",
+      "/pwa.config.json",
+      "/styles/variables.css",
+      "/styles/install.css",
+      "/scripts/config-loader.js",
+      "/scripts/install-page.js",
+      "/scripts/sw-register.js"
+    ],
+    "runtimeCache": [
+      { "urlPattern": "/api/", "strategy": "network-first", "maxAge": 0 },
+      { "urlPattern": "/images/", "strategy": "cache-first", "maxEntries": 50, "maxAge": 2592000 },
+      { "urlPattern": "/assets/", "strategy": "cache-first", "maxAge": 604800 },
+      { "urlPattern": "/fonts/", "strategy": "cache-first", "maxAge": 2592000 }
+    ],
+    "offlineFallback": "/offline.html"
+  },
+  "update": {
+    "autoUpdate": false,
+    "promptUser": true,
+    "checkInterval": 3600000
+  }
+}

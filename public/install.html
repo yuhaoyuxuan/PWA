@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>安装应用</title>
+  <link rel="stylesheet" href="/styles/variables.css">
+  <link rel="stylesheet" href="/styles/install.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/assets/icons/icon-192.png">
+</head>
+<body>
+  <!-- Sticky Header -->
+  <header class="sticky-header" id="stickyHeader">
+    <div class="sticky-inner">
+      <img id="stickyIcon" class="sticky-icon" src="/assets/icons/icon-512.png" alt="">
+      <div class="sticky-info">
+        <h2 id="stickyName" class="sticky-name">App Name</h2>
+        <span id="stickyDev" class="sticky-dev">Developer</span>
+      </div>
+      <button id="stickyInstallBtn" class="sticky-install-btn">安装</button>
+    </div>
+    <div class="sticky-progress" id="stickyProgressBar">
+      <div class="sticky-progress-fill" id="stickyProgressFill"></div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="icon-ring-container" id="iconRingContainer">
+        <svg class="progress-ring" id="progressRing" viewBox="0 0 120 120">
+          <circle class="ring-track" cx="60" cy="60" r="54" />
+          <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="54" />
+        </svg>
+        <img id="appIcon" class="app-icon-large" src="/assets/icons/icon-512.png" alt="App Icon">
+        <div class="install-check" id="installCheck">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <h1 id="appName" class="app-title">App Name</h1>
+      <p id="appDev" class="app-dev">Developer Name</p>
+
+      <div class="rating-row">
+        <span class="rating-stars" id="ratingStars">★★★★★</span>
+        <span class="rating-value" id="ratingValue">4.5</span>
+        <span class="rating-count" id="ratingCount">(1K reviews)</span>
+      </div>
+
+      <div class="badges-row" id="badgesRow">
+        <span class="badge badge-safe" id="badgeSafe">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          安全
+        </span>
+      </div>
+    </section>
+
+    <!-- Install Button -->
+    <section class="install-action">
+      <button id="installBtn" class="install-btn" disabled>
+        <span class="btn-label" id="btnLabel">安装</span>
+        <span class="btn-size" id="btnSize"></span>
+      </button>
+      <div class="install-progress" id="installProgressBar">
+        <div class="install-progress-fill" id="installProgressFill"></div>
+      </div>
+      <p id="installStepText" class="install-step-text"></p>
+    </section>
+
+    <!-- Screenshots -->
+    <section class="screenshots-section" id="screenshotsSection">
+      <div class="screenshots-scroll" id="screenshotsScroll"></div>
+      <div class="screenshot-dots" id="screenshotDots"></div>
+    </section>
+
+    <!-- About -->
+    <section class="content-card" id="aboutCard">
+      <h3 class="card-title">关于此应用</h3>
+      <p id="aboutText" class="card-body">应用描述内容</p>
+    </section>
+
+    <!-- What's New -->
+    <section class="content-card" id="whatsNewCard">
+      <h3 class="card-title">新变化</h3>
+      <div class="version-row">
+        <span class="version-label">版本</span>
+        <span class="version-value" id="versionValue">1.0.0</span>
+      </div>
+      <p id="whatsNewText" class="card-body">初始版本</p>
+    </section>
+
+    <!-- App Info -->
+    <section class="content-card">
+      <h3 class="card-title">应用信息</h3>
+      <ul class="info-list" id="infoList">
+        <li><span>版本</span><span id="infoVersion">1.0.0</span></li>
+        <li><span>更新日期</span><span id="infoDate">2026-06-08</span></li>
+        <li><span>大小</span><span id="infoSize">2.5 MB</span></li>
+        <li><span>类别</span><span id="infoCategory">工具</span></li>
+      </ul>
+    </section>
+
+    <!-- Data Safety -->
+    <section class="content-card">
+      <h3 class="card-title">数据安全</h3>
+      <p class="card-body" id="dataSafety">此应用不会收集或分享任何用户数据。</p>
+      <a class="card-link" id="privacyLink" href="#" target="_blank">隐私政策</a>
+    </section>
+  </main>
+
+  <!-- iOS Guide -->
+  <div id="iosGuide" class="ios-guide hidden">
+    <div class="ios-guide-card">
+      <h3>添加到主屏幕</h3>
+      <div class="ios-steps">
+        <div class="ios-step">
+          <div class="ios-step-icon">1</div>
+          <span>点击 Safari 底部的 <strong>分享</strong> 按钮 📤</span>
+        </div>
+        <div class="ios-step">
+          <div class="ios-step-icon">2</div>
+          <span>向下滚动，选择 <strong>添加到主屏幕</strong></span>
+        </div>
+        <div class="ios-step">
+          <div class="ios-step-icon">3</div>
+          <span>点击 <strong>添加</strong> 完成安装</span>
+        </div>
+      </div>
+      <button class="ios-guide-close" id="iosGuideClose">知道了</button>
+    </div>
+  </div>
+
+  <script src="/scripts/config-loader.js"></script>
+  <script src="/scripts/install-page.js"></script>
+  <script src="/scripts/sw-register.js"></script>
+</body>
+</html>

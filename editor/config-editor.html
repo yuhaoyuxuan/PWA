@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA 配置编辑器</title>
+  <link rel="stylesheet" href="/styles/variables.css">
+  <link rel="stylesheet" href="/styles/config-editor.css">
+  <link rel="icon" href="/assets/icons/icon-192.png">
+</head>
+<body>
+  <header class="toolbar">
+    <div class="toolbar-left">
+      <h1 class="toolbar-title">PWA 配置编辑器</h1>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn btn-outline" id="importBtn" title="从文件导入 JSON 配置">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        导入
+      </button>
+      <button class="btn btn-outline" id="exportBtn" title="导出完整 PWA 部署包 (zip)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        导出部署包
+      </button>
+      <button class="btn btn-outline" id="resetBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        重置
+      </button>
+      <button class="btn btn-primary" id="saveBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        保存配置
+      </button>
+    </div>
+  </header>
+
+  <div class="editor-layout">
+    <!-- Left: Forms -->
+    <aside class="editor-panel" id="formPanel">
+      <nav class="section-tabs" id="sectionTabs">
+        <button class="section-tab active" data-section="app">App 信息</button>
+        <button class="section-tab" data-section="install">安装页面</button>
+        <button class="section-tab" data-section="theme">主题 & 外观</button>
+        <button class="section-tab" data-section="cache">缓存策略</button>
+        <button class="section-tab" data-section="update">版本更新</button>
+      </nav>
+
+      <div class="form-scroll">
+        <form id="configForm" autocomplete="off">
+          <!-- App Section -->
+          <section class="form-section" data-section="app">
+            <h2 class="section-title">App 基本信息</h2>
+            <div class="form-group">
+              <label>应用名称 <span class="required">*</span></label>
+              <input type="text" name="app.name" data-path="app.name" required maxlength="60">
+            </div>
+            <div class="form-group">
+              <label>短名称 <span class="required">*</span></label>
+              <input type="text" name="app.short_name" data-path="app.short_name" required maxlength="12">
+              <span class="form-hint">主屏幕图标下方显示的名称，建议 ≤12 字符</span>
+            </div>
+            <div class="form-group">
+              <label>描述</label>
+              <textarea name="app.description" data-path="app.description" rows="2" maxlength="200"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>启动地址 (start_url)</label>
+                <input type="text" name="app.start_url" data-path="app.start_url" placeholder="/">
+              </div>
+              <div class="form-group">
+                <label>作用域 (scope)</label>
+                <input type="text" name="app.scope" data-path="app.scope" placeholder="/">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>显示模式</label>
+                <select name="app.display" data-path="app.display">
+                  <option value="standalone">Standalone（独立窗口）</option>
+                  <option value="fullscreen">Fullscreen（全屏）</option>
+                  <option value="minimal-ui">Minimal UI</option>
+                  <option value="browser">Browser</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>屏幕方向</label>
+                <select name="app.orientation" data-path="app.orientation">
+                  <option value="portrait-primary">竖屏</option>
+                  <option value="landscape-primary">横屏</option>
+                  <option value="any">自适应</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>主题色</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="app.theme_color" data-path="app.theme_color">
+                  <input type="text" name="app.theme_color_text" class="color-text" data-linked="app.theme_color" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>背景色</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="app.background_color" data-path="app.background_color">
+                  <input type="text" name="app.background_color_text" class="color-text" data-linked="app.background_color" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Install Page Section -->
+          <section class="form-section hidden" data-section="install">
+            <h2 class="section-title">安装页面内容</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label>页面标题</label>
+                <input type="text" name="installPage.title" data-path="installPage.title" maxlength="60">
+              </div>
+              <div class="form-group">
+                <label>开发者名称</label>
+                <input type="text" name="app.developer" data-path="app.developer" maxlength="40">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>副标题 / 引导文案</label>
+              <input type="text" name="installPage.subtitle" data-path="installPage.subtitle" maxlength="120">
+            </div>
+            <div class="form-group">
+              <label>App 图标 URL</label>
+              <input type="text" name="installPage.icon" data-path="installPage.icon" placeholder="/assets/icons/icon-512.png">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>评分 (1-5)</label>
+                <input type="number" name="installPage.rating" data-path="installPage.rating" min="0" max="5" step="0.1">
+              </div>
+              <div class="form-group">
+                <label>评论数</label>
+                <input type="number" name="installPage.reviewCount" data-path="installPage.reviewCount" min="0" step="100">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>应用大小</label>
+                <input type="text" name="installPage.size" data-path="installPage.size" placeholder="2.5 MB">
+              </div>
+              <div class="form-group">
+                <label>类别</label>
+                <input type="text" name="installPage.category" data-path="installPage.category" placeholder="工具">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>关于此应用</label>
+              <textarea name="installPage.about" data-path="installPage.about" rows="3" maxlength="500"></textarea>
+            </div>
+            <div class="form-group">
+              <label>新变化</label>
+              <input type="text" name="installPage.whatsNew" data-path="installPage.whatsNew" maxlength="200">
+            </div>
+            <div class="form-group">
+              <label>功能亮点列表（每行一个）</label>
+              <textarea name="installPage.features" data-path="installPage.features" rows="4"
+                placeholder="离线可用&#10;推送通知&#10;快速启动"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>进度步骤（每行一个）</label>
+              <textarea name="installPage.progressSteps" data-path="installPage.progressSteps" rows="3"
+                placeholder="正在下载资源...&#10;正在缓存数据...&#10;完成安装"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>进度条总时长（毫秒）</label>
+              <input type="number" name="installPage.progressDuration" data-path="installPage.progressDuration" min="500" max="15000" step="100">
+            </div>
+          </section>
+
+          <!-- Theme Section -->
+          <section class="form-section hidden" data-section="theme">
+            <h2 class="section-title">主题 & 外观</h2>
+            <div class="theme-colors-grid">
+              <div class="form-group">
+                <label>主色 (Primary)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.primary" data-path="installPage.theme.primary">
+                  <input type="text" class="color-text" data-linked="installPage.theme.primary" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>主色深色 (Hover)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.primaryHover" data-path="installPage.theme.primaryHover">
+                  <input type="text" class="color-text" data-linked="installPage.theme.primaryHover" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>卡片/页面背景 (Surface)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.surface" data-path="installPage.theme.surface">
+                  <input type="text" class="color-text" data-linked="installPage.theme.surface" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>底层背景 (Surface BG)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.surfaceBg" data-path="installPage.theme.surfaceBg">
+                  <input type="text" class="color-text" data-linked="installPage.theme.surfaceBg" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>正文文字 (On Surface)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.onSurface" data-path="installPage.theme.onSurface">
+                  <input type="text" class="color-text" data-linked="installPage.theme.onSurface" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>次要文字 (Variant)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.onSurfaceVariant" data-path="installPage.theme.onSurfaceVariant">
+                  <input type="text" class="color-text" data-linked="installPage.theme.onSurfaceVariant" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>按钮文字 (On Primary)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.onPrimary" data-path="installPage.theme.onPrimary">
+                  <input type="text" class="color-text" data-linked="installPage.theme.onPrimary" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>主色容器 (Container)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.primaryContainer" data-path="installPage.theme.primaryContainer">
+                  <input type="text" class="color-text" data-linked="installPage.theme.primaryContainer" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>描边 (Outline Variant)</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.outlineVariant" data-path="installPage.theme.outlineVariant">
+                  <input type="text" class="color-text" data-linked="installPage.theme.outlineVariant" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>星级颜色</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.starColor" data-path="installPage.theme.starColor">
+                  <input type="text" class="color-text" data-linked="installPage.theme.starColor" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>徽章文字色</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.badgeText" data-path="installPage.theme.badgeText">
+                  <input type="text" class="color-text" data-linked="installPage.theme.badgeText" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>徽章背景色</label>
+                <div class="color-input-wrap">
+                  <input type="color" name="installPage.theme.badgeBg" data-path="installPage.theme.badgeBg">
+                  <input type="text" class="color-text" data-linked="installPage.theme.badgeBg" pattern="^#[0-9a-fA-F]{6}$">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Cache Section -->
+          <section class="form-section hidden" data-section="cache">
+            <h2 class="section-title">缓存策略</h2>
+            <div class="form-group">
+              <label>缓存版本号 <span class="required">*</span></label>
+              <input type="text" name="cache.version" data-path="cache.version" required maxlength="20" pattern="^[0-9]+\\.[0-9]+\\.[0-9]+$">
+              <span class="form-hint">语义化版本如 1.0.0，修改版本号将触发缓存刷新</span>
+            </div>
+            <div class="form-group">
+              <label>预缓存资源（每行一个路径）</label>
+              <textarea name="cache.precache" data-path="cache.precache" rows="6"
+                placeholder="/&#10;/index.html&#10;/install.html&#10;/offline.html"
+              ></textarea>
+              <span class="form-hint">SW 安装时自动缓存的资源，确保离线可用</span>
+            </div>
+            <div class="form-group">
+              <label>离线回退页</label>
+              <input type="text" name="cache.offlineFallback" data-path="cache.offlineFallback" value="/offline.html">
+            </div>
+
+            <h3 class="subsection-title">运行时缓存规则</h3>
+            <div id="cacheRules" class="cache-rules"></div>
+            <button type="button" class="btn btn-outline btn-sm" id="addCacheRule">+ 添加规则</button>
+          </section>
+
+          <!-- Update Section -->
+          <section class="form-section hidden" data-section="update">
+            <h2 class="section-title">版本更新控制</h2>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="update.autoUpdate" data-path="update.autoUpdate">
+                <span>自动更新（检测到新版本立即应用，不提示用户）</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="update.promptUser" data-path="update.promptUser">
+                <span>提示用户更新（显示更新横幅）</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>定期检查间隔（毫秒）</label>
+              <input type="number" name="update.checkInterval" data-path="update.checkInterval" min="0" step="60000" placeholder="3600000">
+              <span class="form-hint">0 = 不自动检查；3600000 = 每小时</span>
+            </div>
+          </section>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Right: Preview -->
+    <main class="preview-panel" id="previewPanel">
+      <div class="preview-header">
+        <h2>实时预览</h2>
+        <span class="preview-badge">Live</span>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" id="phoneScreen">
+          <div class="preview-content">
+            <div class="preview-card">
+              <div class="preview-icon-wrapper">
+                <img id="previewIcon" class="preview-icon" src="/assets/icons/icon-512.png" alt="App Icon">
+              </div>
+              <h1 id="previewName" class="preview-name">My PWA App</h1>
+              <p id="previewDesc" class="preview-desc">添加到主屏幕以获得完整体验</p>
+
+              <div id="previewFeatures" class="preview-features">
+                <div class="preview-feature">
+                  <span class="preview-feature-dot" style="background: var(--pwa-success, #10b981)"></span>
+                  <span>离线可用</span>
+                </div>
+                <div class="preview-feature">
+                  <span class="preview-feature-dot" style="background: var(--pwa-success, #10b981)"></span>
+                  <span>推送通知</span>
+                </div>
+                <div class="preview-feature">
+                  <span class="preview-feature-dot" style="background: var(--pwa-success, #10b981)"></span>
+                  <span>快速启动</span>
+                </div>
+              </div>
+
+              <div class="preview-progress-section">
+                <div class="preview-progress-steps" id="previewSteps">
+                  <span class="preview-step-item">下载资源</span>
+                  <span class="preview-step-item">缓存数据</span>
+                  <span class="preview-step-item">完成安装</span>
+                </div>
+                <div class="preview-progress-bar">
+                  <div class="preview-progress-fill" id="previewProgressFill" style="width: 68%"></div>
+                </div>
+                <div class="preview-progress-label">68%</div>
+              </div>
+
+              <button class="preview-btn" id="previewBtn">安装应用</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/scripts/config-editor.js"></script>
+</body>
+</html>
