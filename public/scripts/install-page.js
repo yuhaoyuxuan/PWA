@@ -36,13 +36,20 @@ class InstallPage {
     this.setText('ratingStars', this.renderStars(rating));
     this.setText('ratingValue', rating.toFixed(1));
     if (reviewCount > 0) {
-      this.setText('ratingCount', `(${this.formatCount(reviewCount)} reviews)`);
+      this.setText('ratingCount', `(${this.formatCount(reviewCount)} avaliações)`);
     } else {
       this.setText('ratingCount', '');
     }
 
+    // Ratings & Reviews card
+    this.setText('ratingScoreValue', rating.toFixed(1));
+    this.setText('ratingScoreStars', this.renderStars(rating));
+    this.renderRatingDistribution(ip.ratingDistribution);
+    this.renderReviews(ip.reviews);
+    this.renderReviewAge(ip.reviewAgeRating);
+
     // Badges
-    document.getElementById('badgesRow').innerHTML = (ip.badges || ['安全']).map(b =>
+    document.getElementById('badgesRow').innerHTML = (ip.badges || ['Seguro']).map(b =>
       `<span class="badge badge-safe">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         ${b}
@@ -50,7 +57,7 @@ class InstallPage {
     ).join('');
 
     // Install button
-    this.setText('btnLabel', '安装');
+    this.setText('btnLabel', 'Instalar');
     if (ip.size) this.setText('btnSize', ip.size);
 
     // About
@@ -61,16 +68,16 @@ class InstallPage {
     const hasWhatsNew = c.cache && c.cache.version;
     document.getElementById('whatsNewCard').classList.toggle('hidden', !hasWhatsNew);
     this.setText('versionValue', (c.cache && c.cache.version) || '');
-    this.setText('whatsNewText', ip.whatsNew || '初始版本');
+    this.setText('whatsNewText', ip.whatsNew || 'Versão inicial');
 
     // App Info
     this.setText('infoVersion', (c.cache && c.cache.version) || '');
     this.setText('infoDate', ip.updatedDate || '2026-06-08');
     this.setText('infoSize', ip.size || '2.5 MB');
-    this.setText('infoCategory', ip.category || '工具');
+    this.setText('infoCategory', ip.category || 'Ferramentas');
 
     // Data Safety
-    this.setText('dataSafety', ip.dataSafety || '此应用不会收集或分享任何用户数据。');
+    this.setText('dataSafety', ip.dataSafety || 'Este app não coleta nem compartilha nenhum dado do usuário.');
     const privacyEl = document.getElementById('privacyLink');
     if (ip.privacyUrl) {
       privacyEl.href = ip.privacyUrl;
@@ -80,7 +87,7 @@ class InstallPage {
     }
 
     // Page title
-    document.title = `${app.name} — ${ip.subtitle || '安装应用'}`;
+    document.title = `${app.name} — ${ip.subtitle || 'Instalar App'}`;
   }
 
   renderStars(rating) {
@@ -96,6 +103,70 @@ class InstallPage {
     return n.toString();
   }
 
+  renderRatingDistribution(distribution) {
+    const bars = document.getElementById('ratingBars');
+    if (!bars) return;
+    const dist = distribution || [0, 0, 0, 0, 0];
+    const max = Math.max(...dist, 1);
+    // Render from 5 stars down to 1
+    bars.innerHTML = [5, 4, 3, 2, 1].map(star => {
+      const count = dist[star - 1];
+      const pct = (count / max) * 100;
+      return `<div class="rating-bar-row">
+        <span class="rating-bar-label">${star}</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+        <span class="rating-bar-count">${count}</span>
+      </div>`;
+    }).join('');
+  }
+
+  renderReviews(reviews) {
+    const list = document.getElementById('reviewsList');
+    if (!list) return;
+    const items = reviews || [];
+    list.innerHTML = items.map((r, i) => {
+      const initial = (r.user || 'U').charAt(0);
+      return `<div class="review-item">
+        <div class="review-header">
+          <div class="review-avatar">${initial}</div>
+          <div class="review-meta">
+            <div class="review-user">${r.user || 'Usuário anônimo'}</div>
+            <div class="review-date">${r.date || ''}</div>
+          </div>
+          <span class="review-stars">${this.renderStars(r.rating || 0)}</span>
+        </div>
+        <div class="review-content">${r.content || ''}</div>
+        <button class="review-helpful" data-review-index="${i}">
+          Útil (${r.helpful || 0})
+        </button>
+      </div>`;
+    }).join('');
+
+    // Bind helpful buttons
+    list.querySelectorAll('.review-helpful').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('voted')) return;
+        btn.classList.add('voted');
+        const idx = parseInt(btn.dataset.reviewIndex, 10);
+        const items = this.config.installPage.reviews || [];
+        if (items[idx]) {
+          items[idx].helpful = (items[idx].helpful || 0) + 1;
+          btn.textContent = `Útil (${items[idx].helpful})`;
+        }
+      });
+    });
+  }
+
+  renderReviewAge(ageRating) {
+    const el = document.getElementById('reviewAge');
+    if (!el) return;
+    if (ageRating) {
+      el.innerHTML = `<span class="review-age-badge">${ageRating}</span> Classificação etária`;
+    } else {
+      el.innerHTML = '';
+    }
+  }
+
   // ── Screenshots Carousel ──
   initScreenshots() {
     const screenshots = this.config.installPage.screenshots || [];
@@ -105,11 +176,12 @@ class InstallPage {
     const scroll = document.getElementById('screenshotsScroll');
     const dots = document.getElementById('screenshotDots');
 
-    scroll.innerHTML = screenshots.map((url, i) =>
-      `<div class="screenshot-item" data-index="${i}">
+    scroll.innerHTML = screenshots.map((url, i) => {
+      const isGif = /\.gif(\?.*)?$/i.test(url);
+      return `<div class="screenshot-item${isGif ? ' is-gif' : ''}" data-index="${i}">
         <img src="${url}" alt="Screenshot ${i + 1}" loading="lazy">
-      </div>`
-    ).join('');
+      </div>`;
+    }).join('');
 
     dots.innerHTML = screenshots.map((_, i) =>
       `<button class="screenshot-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`
@@ -231,7 +303,7 @@ class InstallPage {
 
   // ── Progress Animation ──
   animateProgress() {
-    const steps = this.config.installPage.progressSteps || ['下载中', '安装中', '完成'];
+    const steps = this.config.installPage.progressSteps || ['Baixando...', 'Instalando...', 'Concluído'];
     const duration = this.config.installPage.progressDuration || 3000;
     const stepCount = steps.length;
     const perStep = duration / stepCount;
@@ -295,7 +367,7 @@ class InstallPage {
 
   finishProgress() {
     this.setProgress(100);
-    document.getElementById('installStepText').textContent = '安装完成';
+    document.getElementById('installStepText').textContent = 'Instalação concluída';
     document.getElementById('installCheck').classList.add('show');
     this.setButtonState('success');
 
@@ -307,7 +379,7 @@ class InstallPage {
   completeInstallUI() {
     localStorage.setItem('__pwa_launched', '1');
     sessionStorage.removeItem('__pwa_routed');
-    document.getElementById('installStepText').textContent = '✓ 即将跳转到应用';
+    document.getElementById('installStepText').textContent = '✓ Redirecionando para o app...';
     setTimeout(() => this.redirectToStart(), 400);
   }
 
@@ -323,19 +395,19 @@ class InstallPage {
       case 'installing':
         btn.classList.add('installing');
         stickyBtn.classList.add('installing');
-        label.textContent = '安装中...';
-        stickyBtn.textContent = '安装中';
+        label.textContent = 'Instalando...';
+        stickyBtn.textContent = 'Instalando';
         btn.disabled = true;
         stickyBtn.disabled = true;
         break;
       case 'success':
         btn.classList.add('success');
-        label.textContent = '✓ 已安装';
-        stickyBtn.textContent = '已安装';
+        label.textContent = '✓ Instalado';
+        stickyBtn.textContent = 'Instalado';
         break;
       default:
-        label.textContent = '安装';
-        stickyBtn.textContent = '安装';
+        label.textContent = 'Instalar';
+        stickyBtn.textContent = 'Instalar';
         btn.disabled = false;
         stickyBtn.disabled = false;
     }
@@ -348,7 +420,7 @@ class InstallPage {
     document.getElementById('installProgressBar').classList.remove('active');
     document.getElementById('stickyProgressBar').classList.remove('active');
     document.getElementById('installCheck').classList.remove('show');
-    document.getElementById('installStepText').textContent = '安装已取消';
+    document.getElementById('installStepText').textContent = 'Instalação cancelada';
   }
 
   redirectToStart() {

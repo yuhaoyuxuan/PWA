@@ -140,6 +140,42 @@
                 <input type="number" name="installPage.reviewCount" data-path="installPage.reviewCount" min="0" step="100">
               </div>
             </div>
+
+            <h3 class="subsection-title">评分分布</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>1 星人数</label>
+                <input type="number" name="installPage.ratingDistribution.0" data-path="installPage.ratingDistribution.0" min="0">
+              </div>
+              <div class="form-group">
+                <label>2 星人数</label>
+                <input type="number" name="installPage.ratingDistribution.1" data-path="installPage.ratingDistribution.1" min="0">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>3 星人数</label>
+                <input type="number" name="installPage.ratingDistribution.2" data-path="installPage.ratingDistribution.2" min="0">
+              </div>
+              <div class="form-group">
+                <label>4 星人数</label>
+                <input type="number" name="installPage.ratingDistribution.3" data-path="installPage.ratingDistribution.3" min="0">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>5 星人数</label>
+                <input type="number" name="installPage.ratingDistribution.4" data-path="installPage.ratingDistribution.4" min="0">
+              </div>
+              <div class="form-group">
+                <label>年龄分级</label>
+                <input type="text" name="installPage.reviewAgeRating" data-path="installPage.reviewAgeRating" placeholder="18+">
+              </div>
+            </div>
+
+            <h3 class="subsection-title">评论管理</h3>
+            <div id="reviewEditors" class="review-editors"></div>
+            <button type="button" class="btn btn-outline btn-sm" id="addReviewBtn">+ 添加评论</button>
             <div class="form-row">
               <div class="form-group">
                 <label>应用大小</label>

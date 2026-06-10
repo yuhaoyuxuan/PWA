@@ -17,8 +17,8 @@
     ]
   },
   "installPage": {
-    "title": "Instalar App",
-    "subtitle": "Adicione à tela inicial para uma experiência completa",
+    "title": "安装应用",
+    "subtitle": "添加到主屏幕以获得完整体验",
     "icon": "/assets/icons/icon-512.png",
     "screenshots": [
       "/assets/images/1.gif",
@@ -36,7 +36,7 @@
         "avatar": "",
         "date": "2026-05-20",
         "rating": 5,
-        "content": "Muito bom, funciona offline, recomendo!",
+        "content": "非常好用，离线也能用，推荐！",
         "helpful": 42
       },
       {
@@ -44,7 +44,7 @@
         "avatar": "",
         "date": "2026-05-15",
         "rating": 4,
-        "content": "Boa experiência, inicia muito rápido.",
+        "content": "体验不错，启动速度很快。",
         "helpful": 18
       },
       {
@@ -52,7 +52,7 @@
         "avatar": "",
         "date": "2026-05-10",
         "rating": 5,
-        "content": "Fácil de instalar, interface limpa e bonita.",
+        "content": "安装方便，界面简洁美观。",
         "helpful": 35
       },
       {
@@ -60,21 +60,21 @@
         "avatar": "",
         "date": "2026-05-10",
         "rating": 5,
-        "content": "Fácil de instalar, interface limpa e bonita.",
+        "content": "安装方便，界面简洁美观。",
         "helpful": 35
       }
     ],
     "reviewAgeRating": "18+",
-    "badges": ["Seguro", "Sem anúncios"],
+    "badges": ["安全", "无广告"],
     "size": "2.5 MB",
-    "category": "Ferramentas",
+    "category": "工具",
     "updatedDate": "2026-06-08",
-    "about": "Um Progressive Web App construído com PWA Manager. Suporta acesso offline, notificações push e inicialização rápida. Após a instalação, você terá uma experiência completa semelhante a um app nativo.",
-    "whatsNew": "Versão inicial. Suporta cache offline e atualização automática de versão.",
-    "dataSafety": "Este app não coleta nem compartilha nenhum dado do usuário. Todos os dados são armazenados no seu dispositivo.",
+    "about": "这是一个使用 PWA Manager 构建的渐进式 Web 应用。支持离线访问、推送通知和快速启动。安装后将获得类似原生应用的完整体验。",
+    "whatsNew": "初始版本。支持离线缓存和版本自动更新。",
+    "dataSafety": "此应用不会收集或分享任何用户数据。所有数据均存储在您的设备上。",
     "privacyUrl": "",
-    "features": ["Disponível offline", "Notificações push", "Inicialização rápida"],
-    "progressSteps": ["Baixando recursos...", "Armazenando em cache...", "Instalação concluída"],
+    "features": ["离线可用", "推送通知", "快速启动"],
+    "progressSteps": ["正在下载资源...", "正在缓存数据...", "完成安装"],
     "progressDuration": 3000,
     "theme": {
       "primary": "#01875f",

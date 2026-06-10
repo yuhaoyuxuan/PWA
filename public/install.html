@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>安装应用</title>
+  <title>Instalar App</title>
   <link rel="stylesheet" href="/styles/variables.css">
   <link rel="stylesheet" href="/styles/install.css">
   <link rel="manifest" href="/manifest.json">
@@ -21,7 +21,7 @@
         <h2 id="stickyName" class="sticky-name">App Name</h2>
         <span id="stickyDev" class="sticky-dev">Developer</span>
       </div>
-      <button id="stickyInstallBtn" class="sticky-install-btn">安装</button>
+      <button id="stickyInstallBtn" class="sticky-install-btn">Instalar</button>
     </div>
     <div class="sticky-progress" id="stickyProgressBar">
       <div class="sticky-progress-fill" id="stickyProgressFill"></div>
@@ -56,7 +56,7 @@
       <div class="badges-row" id="badgesRow">
         <span class="badge badge-safe" id="badgeSafe">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          安全
+          Seguro
         </span>
       </div>
     </section>
@@ -64,7 +64,7 @@
     <!-- Install Button -->
     <section class="install-action">
       <button id="installBtn" class="install-btn" disabled>
-        <span class="btn-label" id="btnLabel">安装</span>
+        <span class="btn-label" id="btnLabel">Instalar</span>
         <span class="btn-size" id="btnSize"></span>
       </button>
       <div class="install-progress" id="installProgressBar">
@@ -81,58 +81,72 @@
 
     <!-- About -->
     <section class="content-card" id="aboutCard">
-      <h3 class="card-title">关于此应用</h3>
-      <p id="aboutText" class="card-body">应用描述内容</p>
+      <h3 class="card-title">Sobre este app</h3>
+      <p id="aboutText" class="card-body">Descrição do app</p>
     </section>
 
     <!-- What's New -->
     <section class="content-card" id="whatsNewCard">
-      <h3 class="card-title">新变化</h3>
+      <h3 class="card-title">Novidades</h3>
       <div class="version-row">
-        <span class="version-label">版本</span>
+        <span class="version-label">Versão</span>
         <span class="version-value" id="versionValue">1.0.0</span>
       </div>
-      <p id="whatsNewText" class="card-body">初始版本</p>
+      <p id="whatsNewText" class="card-body">Versão inicial</p>
     </section>
 
     <!-- App Info -->
     <section class="content-card">
-      <h3 class="card-title">应用信息</h3>
+      <h3 class="card-title">Informações do app</h3>
       <ul class="info-list" id="infoList">
-        <li><span>版本</span><span id="infoVersion">1.0.0</span></li>
-        <li><span>更新日期</span><span id="infoDate">2026-06-08</span></li>
-        <li><span>大小</span><span id="infoSize">2.5 MB</span></li>
-        <li><span>类别</span><span id="infoCategory">工具</span></li>
+        <li><span>Versão</span><span id="infoVersion">1.0.0</span></li>
+        <li><span>Atualizado em</span><span id="infoDate">2026-06-08</span></li>
+        <li><span>Tamanho</span><span id="infoSize">2.5 MB</span></li>
+        <li><span>Categoria</span><span id="infoCategory">Ferramentas</span></li>
       </ul>
+    </section>
+
+    <!-- Ratings & Reviews -->
+    <section class="content-card" id="ratingsCard">
+      <h3 class="card-title">Avaliações e comentários</h3>
+      <div class="ratings-overview">
+        <div class="ratings-score">
+          <span class="score-value" id="ratingScoreValue">4.5</span>
+          <span class="score-stars" id="ratingScoreStars">★★★★★</span>
+        </div>
+        <div class="rating-bars" id="ratingBars"></div>
+      </div>
+      <div class="reviews-list" id="reviewsList"></div>
+      <div class="review-age" id="reviewAge"></div>
     </section>
 
     <!-- Data Safety -->
     <section class="content-card">
-      <h3 class="card-title">数据安全</h3>
-      <p class="card-body" id="dataSafety">此应用不会收集或分享任何用户数据。</p>
-      <a class="card-link" id="privacyLink" href="#" target="_blank">隐私政策</a>
+      <h3 class="card-title">Segurança de dados</h3>
+      <p class="card-body" id="dataSafety">Este app não coleta nem compartilha nenhum dado do usuário.</p>
+      <a class="card-link" id="privacyLink" href="#" target="_blank">Política de privacidade</a>
     </section>
   </main>
 
   <!-- iOS Guide -->
   <div id="iosGuide" class="ios-guide hidden">
     <div class="ios-guide-card">
-      <h3>添加到主屏幕</h3>
+      <h3>Adicionar à tela inicial</h3>
       <div class="ios-steps">
         <div class="ios-step">
           <div class="ios-step-icon">1</div>
-          <span>点击 Safari 底部的 <strong>分享</strong> 按钮 📤</span>
+          <span>Toque no botão <strong>Compartilhar</strong> na parte inferior do Safari 📤</span>
         </div>
         <div class="ios-step">
           <div class="ios-step-icon">2</div>
-          <span>向下滚动，选择 <strong>添加到主屏幕</strong></span>
+          <span>Role para baixo e selecione <strong>Adicionar à Tela de Início</strong></span>
         </div>
         <div class="ios-step">
           <div class="ios-step-icon">3</div>
-          <span>点击 <strong>添加</strong> 完成安装</span>
+          <span>Toque em <strong>Adicionar</strong> para concluir</span>
         </div>
       </div>
-      <button class="ios-guide-close" id="iosGuideClose">知道了</button>
+      <button class="ios-guide-close" id="iosGuideClose">Entendi</button>
     </div>
   </div>
 

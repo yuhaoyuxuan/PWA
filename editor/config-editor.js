@@ -14,6 +14,7 @@ class ConfigEditor {
     this.bindSectionTabs();
     this.bindFormInputs();
     this.bindCacheRules();
+    this.bindReviewEditors();
     this.bindButtons();
     // Initial preview
     this.updatePreview();
@@ -42,6 +43,13 @@ class ConfigEditor {
         title: '安装应用', subtitle: '添加到主屏幕以获得完整体验',
         icon: '/assets/icons/icon-512.png', screenshots: [],
         rating: 4.5, reviewCount: 1200, badges: ['安全', '无广告'],
+        ratingDistribution: [20, 30, 80, 220, 850],
+        reviews: [
+          { user: '用户A', avatar: '', date: '2026-05-20', rating: 5, content: '非常好用，离线也能用，推荐！', helpful: 42 },
+          { user: '用户B', avatar: '', date: '2026-05-15', rating: 4, content: '体验不错，启动速度很快。', helpful: 18 },
+          { user: '用户C', avatar: '', date: '2026-05-10', rating: 5, content: '安装方便，界面简洁美观。', helpful: 35 }
+        ],
+        reviewAgeRating: '18+',
         size: '2.5 MB', category: '工具', updatedDate: '2026-06-08',
         about: '这是一个使用 PWA Manager 构建的渐进式 Web 应用。',
         whatsNew: '初始版本', dataSafety: '此应用不会收集或分享任何用户数据。',
@@ -106,6 +114,14 @@ class ConfigEditor {
     // Text / number / select / textarea
     document.querySelectorAll('[data-path]').forEach(input => {
       const path = input.dataset.path;
+      // Ensure array parent exists for indexed paths like installPage.ratingDistribution.0
+      const dotMatch = path.match(/^(.+)\.(\d+)$/);
+      if (dotMatch) {
+        const arrPath = dotMatch[1];
+        if (!Array.isArray(this.getValue(arrPath))) {
+          this.setValue(arrPath, []);
+        }
+      }
       const val = this.getValue(path);
 
       if (input.tagName === 'TEXTAREA' && Array.isArray(val)) {
@@ -113,7 +129,7 @@ class ConfigEditor {
       } else if (input.type === 'checkbox') {
         input.checked = !!val;
       } else if (input.tagName === 'SELECT' || input.tagName === 'INPUT') {
-        input.value = val !== undefined ? val : '';
+        input.value = val !== undefined && val !== null ? val : '';
       }
 
       input.addEventListener('input', () => {
@@ -127,7 +143,8 @@ class ConfigEditor {
             this.setValue(path, input.value);
           }
         } else if (input.type === 'number') {
-          this.setValue(path, parseInt(input.value, 10) || 0);
+          const num = parseFloat(input.value);
+          this.setValue(path, isNaN(num) ? 0 : (Number.isInteger(num) ? num : num));
         } else {
           this.setValue(path, input.value);
         }
@@ -159,6 +176,80 @@ class ConfigEditor {
           if (colorInput) colorInput.value = val;
           this.onConfigChanged();
         }
+      });
+    });
+  }
+
+  // ── Review Editors ──
+  bindReviewEditors() {
+    this.renderReviewEditors();
+    document.getElementById('addReviewBtn').addEventListener('click', () => {
+      if (!this.config.installPage.reviews) this.config.installPage.reviews = [];
+      this.config.installPage.reviews.push({
+        user: '新用户', avatar: '', date: new Date().toISOString().slice(0, 10),
+        rating: 5, content: '', helpful: 0
+      });
+      this.renderReviewEditors();
+      this.onConfigChanged();
+    });
+  }
+
+  renderReviewEditors() {
+    const container = document.getElementById('reviewEditors');
+    const reviews = this.config.installPage.reviews || [];
+    container.innerHTML = reviews.map((r, i) => `
+      <div class="cache-rule review-editor" data-review-index="${i}">
+        <div>
+          <label>用户名</label>
+          <input type="text" value="${r.user || ''}" data-review-field="user" data-review-index="${i}" maxlength="30">
+        </div>
+        <div>
+          <label>日期</label>
+          <input type="text" value="${r.date || ''}" data-review-field="date" data-review-index="${i}" maxlength="20">
+        </div>
+        <div>
+          <label>评分</label>
+          <select data-review-field="rating" data-review-index="${i}">
+            <option value="5" ${r.rating === 5 ? 'selected' : ''}>5 星</option>
+            <option value="4" ${r.rating === 4 ? 'selected' : ''}>4 星</option>
+            <option value="3" ${r.rating === 3 ? 'selected' : ''}>3 星</option>
+            <option value="2" ${r.rating === 2 ? 'selected' : ''}>2 星</option>
+            <option value="1" ${r.rating === 1 ? 'selected' : ''}>1 星</option>
+          </select>
+        </div>
+        <div>
+          <label>评论内容</label>
+          <input type="text" value="${(r.content || '').replace(/"/g, '&quot;')}" data-review-field="content" data-review-index="${i}" maxlength="200">
+        </div>
+        <div>
+          <label>有帮助数</label>
+          <input type="number" value="${r.helpful || 0}" data-review-field="helpful" data-review-index="${i}" min="0">
+        </div>
+        <button class="cache-rule-remove" data-review-remove="${i}" title="删除评论">×</button>
+      </div>
+    `).join('');
+
+    // Bind review inputs
+    container.querySelectorAll('[data-review-field]').forEach(input => {
+      input.addEventListener('input', () => {
+        const idx = parseInt(input.dataset.reviewIndex, 10);
+        const field = input.dataset.reviewField;
+        const value = input.type === 'number' ? parseInt(input.value, 10) || 0
+          : input.tagName === 'SELECT' ? parseInt(input.value, 10) : input.value;
+        if (this.config.installPage.reviews[idx]) {
+          this.config.installPage.reviews[idx][field] = value;
+          this.onConfigChanged();
+        }
+      });
+    });
+
+    // Bind remove buttons
+    container.querySelectorAll('[data-review-remove]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.reviewRemove, 10);
+        this.config.installPage.reviews.splice(idx, 1);
+        this.renderReviewEditors();
+        this.onConfigChanged();
       });
     });
   }
